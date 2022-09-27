@@ -1,7 +1,10 @@
-package com.musery.util;
+package com.musery.echarts;
 
-import org.apache.hc.core5.util.Asserts;
+import com.musery.NodeJSEnvironment;
+import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class EchartsGenerator extends NodeJSEnvironment {
 
   private static volatile EchartsGenerator generator;
@@ -26,7 +29,15 @@ public class EchartsGenerator extends NodeJSEnvironment {
   }
 
   public static void generator(String option) {
-    Asserts.notNull(option, "option");
-    getInstance().start("EchartsGenerator.js", r -> {}, e -> {}, "--option", option);
+    if (Objects.isNull(option)) {
+      throw new IllegalArgumentException("option must not be null");
+    }
+    getInstance()
+        .start(
+            "EchartsGenerator.js",
+            r -> {},
+            e -> log.error("generator [{}] with ", option, e),
+            "--option",
+            option);
   }
 }

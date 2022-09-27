@@ -8,7 +8,7 @@
     "micromark-extension-gfm": "^2.0.1"
   },
   "scripts": {
-    "build": "esbuild MarkdownParser.js --bundle --minify --platform=node --outfile=../resources/MarkdownParser.js && esbuild EchartsGenerator.js --minify --bundle --platform=node --outfile=../resources/EchartsGenerator.js"
+    "build": "esbuild MarkdownParser.js --bundle --minify --bundle --platform=node --outfile=../resources/MarkdownParser.js && esbuild EchartsGenerator.js --minify --bundle --platform=node --outfile=../resources/EchartsGenerator.js"
   },
   "devDependencies": {
     "why-is-node-running": "^2.2.2"
