@@ -1,6 +1,7 @@
-package com.musery;
+package com.musery.export;
 
 import java.io.File;
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -14,17 +15,29 @@ public class ExportOption {
   private String name;
   /** 输出文件格式 */
   private Format format;
+  // 首页信息
+  private List<FontElement> font;
   /** 页眉 */
   private String header;
-  /** 页脚 */
-  private String footer;
-
-  // todo style
 
   public File output() {
     return new File(
         output.endsWith("/")
             ? output + name + "." + format.name()
             : output + "/" + name + "." + format.name());
+  }
+
+  private static ThreadLocal<Object> threadLocal = new ThreadLocal<>();
+
+  public static ThreadLocal<Object> getThreadLocal() {
+    return threadLocal;
+  }
+
+  public static void prepare(Object doc) {
+    threadLocal.set(doc);
+  }
+
+  public static void finished() {
+    threadLocal.remove();
   }
 }

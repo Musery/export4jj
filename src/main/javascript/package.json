@@ -5,10 +5,11 @@
     "esbuild": "^0.15.7",
     "mdast-util-from-markdown": "^1.2.0",
     "mdast-util-gfm": "^2.0.1",
-    "micromark-extension-gfm": "^2.0.1"
+    "micromark-extension-gfm": "^2.0.1",
+    "sharp": "^0.31.0"
   },
   "scripts": {
-    "build": "esbuild MarkdownParser.js --bundle --minify --platform=node --outfile=../resources/MarkdownParser.js && esbuild EchartsGenerator.js --minify --bundle --platform=node --outfile=../resources/EchartsGenerator.js"
+    "build": "esbuild MarkdownParser.js --bundle --minify --bundle --platform=node --outfile=../resources/MarkdownParser.js && esbuild EchartsGenerator.js --minify --bundle --platform=node --outfile=../resources/EchartsGenerator.js"
   },
   "devDependencies": {
     "why-is-node-running": "^2.2.2"

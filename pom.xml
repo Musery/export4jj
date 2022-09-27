@@ -7,6 +7,10 @@
     <artifactId>export4jj</artifactId>
     <version>0.1</version>
 
+    <properties>
+        <jackson.version>2.13.4</jackson.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -25,19 +29,59 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>jackson-module-parameter-names</artifactId>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.docx4j</groupId>
             <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
-            <version>11.4.7</version>
+            <version>11.4.8</version>
         </dependency>
         <dependency>
             <groupId>org.docx4j</groupId>
             <artifactId>docx4j-JAXB-MOXy</artifactId>
-            <version>11.4.7</version>
+            <version>11.4.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-export-fo</artifactId>
+            <version>11.4.8</version>
         </dependency>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>3.0.0-RC1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.2.2</version>
         </dependency>
     </dependencies>
 

@@ -1,4 +1,4 @@
-package com.musery.util;
+package com.musery;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.system.oshi.OshiUtil;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,7 @@ public class NodeJSEnvironment {
   protected void start(String jsFile, Consumer<String> suc, Consumer<String> err, String... args) {
     List<String> command = new ArrayList<>(null == args ? 2 : (args.length + 2));
     command.add("node");
-    if (StringUtils.isNotEmpty(jsFile)) {
+    if (!Objects.isNull(jsFile)) {
       command.add(jsFile);
     }
     if (null != args) {
@@ -66,10 +67,10 @@ public class NodeJSEnvironment {
         suc.accept(IoUtil.read(process.getInputStream(), StandardCharsets.UTF_8));
       }
       String errMsg = IoUtil.read(process.getErrorStream(), StandardCharsets.UTF_8);
-      if (StringUtils.isNotEmpty(errMsg)) {
+      if (StringUtils.isNotBlank(errMsg)) {
         log.error("exec command:[{}] with err[{}]", String.join(" ", command), errMsg);
         if (null != err) {
-          err.accept(IoUtil.read(process.getErrorStream(), StandardCharsets.UTF_8));
+          err.accept(errMsg);
         }
       }
     } catch (IOException e) {
