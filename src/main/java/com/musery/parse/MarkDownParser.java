@@ -1,7 +1,7 @@
 package com.musery.parse;
 
 import com.musery.NodeJSEnvironment;
-import com.musery.util.JsonUtil;
+import com.musery.util.JacksonUtils;
 import java.util.Objects;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class MarkDownParser extends NodeJSEnvironment {
             "MarkdownParser.js",
             astString -> {
               if (null != afterParse) {
-                AST ast = JsonUtil.parse(astString, AST.class);
+                AST ast = JacksonUtils.toObject(astString, AST.class);
                 afterParse.accept(ast);
               }
             },

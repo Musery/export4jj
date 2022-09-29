@@ -1,17 +1,20 @@
 package com.musery.export.transform.docx;
 
+import com.musery.export.transform.docx.part.IStyle;
 import com.musery.parse.AST;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.docx4j.jaxb.Context;
+import org.docx4j.wml.Color;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.Ind;
 import org.docx4j.wml.PPrBase.PStyle;
-import org.docx4j.wml.ParaRPr;
-import org.docx4j.wml.RStyle;
+import org.docx4j.wml.PPrBase.Spacing;
+import org.docx4j.wml.RPr;
+import org.docx4j.wml.STThemeColor;
 
 public class Blockquote implements DOCX4TR {
 
@@ -19,23 +22,30 @@ public class Blockquote implements DOCX4TR {
 
   static {
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
-    blockquote = objectFactory.createPPr();
-    ParaRPr blockquoteRPr = objectFactory.createParaRPr();
-
-    PStyle pStyle = objectFactory.createPPrBasePStyle();
-    pStyle.setVal("af");
-
+    PPr pPr = objectFactory.createPPr();
     Ind ind = objectFactory.createPPrBaseInd();
-    ind.setLeft(BigInteger.valueOf(1470L));
-    ind.setRight(BigInteger.valueOf(1470L));
+    ind.setLeft(BigInteger.valueOf(1440L));
+    ind.setRight(BigInteger.valueOf(1440L));
+    ind.setLeftChars(BigInteger.valueOf(700L));
+    ind.setRightChars(BigInteger.valueOf(700L));
+    pPr.setInd(ind);
+    Spacing spacing = objectFactory.createPPrBaseSpacing();
+    spacing.setAfter(BigInteger.valueOf(120L));
+    pPr.setSpacing(spacing);
 
-    RStyle rStyle = objectFactory.createRStyle();
-    rStyle.setVal("a8");
-    blockquoteRPr.setRStyle(rStyle);
+    RPr rPr = objectFactory.createRPr();
+    rPr.setSmallCaps(objectFactory.createBooleanDefaultTrue());
+    Color color = objectFactory.createColor();
+    color.setVal("5A5A5A");
+    color.setThemeColor(STThemeColor.TEXT_1);
+    color.setThemeTint("A5");
+    rPr.setColor(color);
+    IStyle.customPStyle("blockquote", "Block Quote", pPr, rPr);
 
+    blockquote = objectFactory.createPPr();
+    PStyle pStyle = objectFactory.createPPrBasePStyle();
+    pStyle.setVal("blockquote");
     blockquote.setPStyle(pStyle);
-    blockquote.setInd(ind);
-    blockquote.setRPr(blockquoteRPr);
   }
 
   /**
@@ -52,7 +62,7 @@ public class Blockquote implements DOCX4TR {
       switch (child.getType()) {
         case "paragraph":
           for (P p : (List<P>) traverseChildren(ast, i)) {
-            p.getContent().add(0, blockquote);
+            p.setPPr(blockquote);
             list.add(p);
           }
           break;

@@ -1,12 +1,13 @@
 package com.musery.export.transform.docx;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.musery.parse.AST;
 import java.util.List;
 import org.docx4j.jaxb.Context;
 import org.docx4j.wml.CTShd;
 import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.P.Hyperlink;
 import org.docx4j.wml.R;
+import org.docx4j.wml.RPr;
 import org.docx4j.wml.STShd;
 
 public class InlineCode implements DOCX4TR {
@@ -23,17 +24,14 @@ public class InlineCode implements DOCX4TR {
   @Override
   public List transform(AST ast) {
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
-    List<Object> list = traverseChildren(ast);
-    for (Object r : list) {
-      if (r instanceof Hyperlink) {
-        for (Object hr : ((Hyperlink) r).getContent()) {
-          ((R) hr).getRPr().setShd(shd);
-        }
-      } else {
-        ((R) r).getRPr().setShd(shd);
-      }
-    }
-    return list;
+    org.docx4j.wml.Text text = objectFactory.createText();
+    text.setValue(ast.getValue());
+    RPr rPr = objectFactory.createRPr();
+    rPr.setShd(shd);
+    R run = objectFactory.createR();
+    run.getContent().add(text);
+    run.setRPr(rPr);
+    return CollectionUtil.newArrayList(run);
   }
 
   @Override

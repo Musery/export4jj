@@ -13,4 +13,4 @@ const args = require("arg")({
   "--markdown": String,
 });
 
-console.log(toAST(args["--markdown"]));
+console.log(JSON.stringify(toAST(args["--markdown"])));

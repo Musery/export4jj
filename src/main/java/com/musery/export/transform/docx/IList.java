@@ -1,42 +1,44 @@
 package com.musery.export.transform.docx;
 
+import com.musery.export.transform.docx.part.INum;
+import com.musery.export.transform.docx.part.IStyle;
 import com.musery.parse.AST;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.docx4j.jaxb.Context;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
-import org.docx4j.wml.PPrBase.Ind;
 import org.docx4j.wml.PPrBase.PStyle;
 
 public class IList implements DOCX4TR {
 
-  private static final PPr[] orderedList = new PPr[5];
-  private static final String[] styleID = new String[] {"a", "2", "3", "4", "5"};
-  private static final PPr[] bulletList = new PPr[5];
-  private static final String[] iStyleID = new String[] {"a0", "20", "30", "40", "50"};
+  private static final PPr[] orderedList = new PPr[6];
+  private static final PPr[] bulletList = new PPr[6];
 
   static {
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
 
-      Ind ind = objectFactory.createPPrBaseInd();
-      ind.setLeft(BigInteger.valueOf(420L * (i + 1)));
-      ind.setHanging(BigInteger.valueOf(420L));
+      PPr ol = objectFactory.createPPr();
+      ol.setContextualSpacing(objectFactory.createBooleanDefaultTrue());
+      ol.setNumPr(INum.getList(true, i));
+      IStyle.customPStyle("ol " + i, "OrderList " + i, ol, null);
 
       orderedList[i] = objectFactory.createPPr();
       PStyle pStyle = objectFactory.createPPrBasePStyle();
-      pStyle.setVal(styleID[i]);
+      pStyle.setVal("ol " + i);
       orderedList[i].setPStyle(pStyle);
-      orderedList[i].setInd(ind);
+
+      PPr bl = objectFactory.createPPr();
+      bl.setContextualSpacing(objectFactory.createBooleanDefaultTrue());
+      bl.setNumPr(INum.getList(false, i));
+      IStyle.customPStyle("bl " + i, "BulletList " + i, bl, null);
 
       bulletList[i] = objectFactory.createPPr();
       PStyle iPStyle = objectFactory.createPPrBasePStyle();
-      iPStyle.setVal(iStyleID[i]);
-      orderedList[i].setPStyle(iPStyle);
-      orderedList[i].setInd(ind);
+      iPStyle.setVal("bl " + i);
+      bulletList[i].setPStyle(iPStyle);
     }
   }
 
@@ -56,7 +58,7 @@ public class IList implements DOCX4TR {
             }
             break;
           default:
-            for (Object p : transform(child)) {
+            for (Object p : traverseOne(child)) {
               ((P) p).setPPr(ast.isOrdered() ? orderedList[deep] : bulletList[deep]);
               list.add((P) p);
             }

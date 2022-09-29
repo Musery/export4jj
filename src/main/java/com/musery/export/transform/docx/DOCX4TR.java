@@ -10,10 +10,6 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 
 public interface DOCX4TR extends TR {
 
-  static void start(AST ast) {
-    Config.start.transform(ast);
-  }
-
   @Override
   default List traverseOne(AST ast) {
     for (DOCX4TR tr : Config.list) {
@@ -29,8 +25,6 @@ public interface DOCX4TR extends TR {
   }
 
   class Config {
-
-    private static DOCX4TR start = new Root();
 
     protected static List<DOCX4TR> list = new LinkedList<>();
     // 默认加载包
@@ -49,6 +43,10 @@ public interface DOCX4TR extends TR {
       tail(new Blockquote());
       tail(new IList());
       tail(new ThematicBreak());
+      tail(new Table());
+      tail(new TableRow());
+      tail(new TableCell());
+      tail(new Footnote());
     }
 
     public static void tail(DOCX4TR tr) {

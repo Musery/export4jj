@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import oshi.software.os.OperatingSystem;
 
 /** NodeJS 进程运行环境 */
@@ -66,10 +67,10 @@ public class NodeJSEnvironment {
         suc.accept(IoUtil.read(process.getInputStream(), StandardCharsets.UTF_8));
       }
       String errMsg = IoUtil.read(process.getErrorStream(), StandardCharsets.UTF_8);
-      if (!Objects.isNull(errMsg)) {
+      if (StringUtils.isNotBlank(errMsg)) {
         log.error("exec command:[{}] with err[{}]", String.join(" ", command), errMsg);
         if (null != err) {
-          err.accept(IoUtil.read(process.getErrorStream(), StandardCharsets.UTF_8));
+          err.accept(errMsg);
         }
       }
     } catch (IOException e) {

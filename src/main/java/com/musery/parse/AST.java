@@ -20,4 +20,9 @@ public class AST {
   private boolean ordered;
   private int start;
   private List<AST> children;
+  // foot
+  private String identifier;
+  private String label;
+  // table
+  private List<String> align;
 }

@@ -1,21 +1,41 @@
 package com.musery.export.transform.docx;
 
+import cn.hutool.core.collection.CollectionUtil;
+import com.musery.export.transform.docx.part.IStyle;
 import com.musery.parse.AST;
 import java.util.List;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.relationships.Relationship;
+import org.docx4j.wml.Color;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P.Hyperlink;
 import org.docx4j.wml.R;
+import org.docx4j.wml.RPr;
 import org.docx4j.wml.RStyle;
+import org.docx4j.wml.STThemeColor;
+import org.docx4j.wml.U;
+import org.docx4j.wml.UnderlineEnumeration;
 
 public class Link implements DOCX4TR {
 
-  private static final RStyle link = Context.getWmlObjectFactory().createRStyle();
+  private static final RStyle link;
 
   static {
-    link.setVal("ad");
+    ObjectFactory objectFactory = Context.getWmlObjectFactory();
+    RPr rPr = objectFactory.createRPr();
+    rPr.setSmallCaps(objectFactory.createBooleanDefaultTrue());
+    Color color = objectFactory.createColor();
+    color.setVal("0563C1");
+    color.setThemeColor(STThemeColor.HYPERLINK);
+    rPr.setColor(color);
+    U u = objectFactory.createU();
+    u.setVal(UnderlineEnumeration.SINGLE);
+    rPr.setU(u);
+    IStyle.customCStyle("link", "Hyperlink", rPr);
+
+    link = objectFactory.createRStyle();
+    link.setVal("link");
   }
 
   @Override
@@ -29,7 +49,7 @@ public class Link implements DOCX4TR {
     Hyperlink hyperlink = objectFactory.createPHyperlink();
     hyperlink.getContent().addAll(list);
     hyperlink.setId(relationship.getId());
-    return List.of(hyperlink);
+    return CollectionUtil.newArrayList(hyperlink);
   }
 
   @Override

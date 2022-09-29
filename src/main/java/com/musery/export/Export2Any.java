@@ -1,18 +1,16 @@
 package com.musery.export;
 
-import com.musery.export.transform.docx.DOCX4TR;
-import com.musery.export.transform.docx.IStyle;
+import com.musery.export.transform.Starter;
+import com.musery.export.transform.docx.Root;
 import com.musery.parse.AST;
 import com.musery.parse.MarkDownParser;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 
 @Slf4j
 public class Export2Any {
+  private static Starter DOCX_STARTER = new Root();
 
   public static void export(ExportOption option, String markdown) {
     if (Objects.isNull(option)) {
@@ -32,37 +30,19 @@ public class Export2Any {
     }
     MarkDownParser.parse(
         markdown,
-        ast -> {
-          if (option.getFormat().equals(Format.PDF)) {
-            export2PDF(option, ast);
-          } else {
-            export2DOCX(option, ast);
-          }
-        },
+        ast -> export2(option, ast),
         eMsg -> log.error("export fail in `parse` step, because of {}", eMsg));
   }
 
-  private static void export2DOCX(ExportOption option, AST ast) {
-    try {
-      WordprocessingMLPackage docx = WordprocessingMLPackage.createPackage();
-      // word/document.xml
-      MainDocumentPart document = new MainDocumentPart();
-      // add relationship
-      docx.addTargetPart(document);
-      // add styles
-      docx.addTargetPart(IStyle.init());
-      //  prepare
-      ExportOption.prepare(docx);
-      // 开始解析成WORD
-      DOCX4TR.start(ast);
-      // 保存到文档
-      docx.save(option.output());
-    } catch (Docx4JException e) {
-      throw new RuntimeException("To Word Error", e);
-    } finally {
-      ExportOption.finished();
+  private static void export2(ExportOption option, AST ast) {
+    switch (option.getFormat()) {
+      case PDF:
+        break;
+      case DOCX:
+        DOCX_STARTER.start(ast, option);
+        break;
+      default:
+        break;
     }
   }
-
-  private static void export2PDF(ExportOption option, AST ast) {}
 }
