@@ -1,4 +1,4 @@
-![三国演义](https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51419e70c59b5494eef01fcd22?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto)
+![三国演义](https://www.dbappsecurity.com.cn/Upload/image/20211008/20211008102715_5530.png)
 
 ## 1. [三国演义](https://baike.baidu.com/item/%E4%B8%89%E5%9B%BD%E6%BC%94%E4%B9%89/5782?fr=aladdin)
 

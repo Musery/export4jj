@@ -1,7 +1,9 @@
 package com.musery.export.transform.docx;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.musery.export.ExportOption;
 import com.musery.export.transform.Starter;
+import com.musery.export.transform.docx.part.IFont;
 import com.musery.export.transform.docx.part.IFooter;
 import com.musery.export.transform.docx.part.IFootnote;
 import com.musery.export.transform.docx.part.IHeader;
@@ -35,8 +37,6 @@ public class Root implements DOCX4TR, Starter {
       mainDocumentPart.addTargetPart(IStyle.init());
       //  prepare 线程变量
       ExportOption.prepare(docx);
-
-      //  todo 首页
       if (StringUtils.isNotBlank(option.getHeader())) {
         IHeader.init(docx, option.getHeader());
       }
@@ -54,6 +54,10 @@ public class Root implements DOCX4TR, Starter {
       TocGenerator tocGenerator = new TocGenerator(docx);
       tocGenerator.generateToc(0, " TOC \\o \"1-3\" \\h \\z \\u ", false);
       // 保存
+      // 首页在目录之后
+      if (CollectionUtil.isNotEmpty(option.getFont())) {
+        IFont.init(docx, option.getFont());
+      }
       docx.save(option.output());
     } catch (Docx4JException e) {
       throw new RuntimeException("To Word Error", e);

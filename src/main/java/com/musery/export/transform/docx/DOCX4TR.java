@@ -34,6 +34,7 @@ public interface DOCX4TR extends TR {
       tail(new Emphasis());
       tail(new InlineCode());
       tail(new Delete());
+      tail(new Echarts());
       tail(new Image());
       tail(new Link());
       tail(new Break());

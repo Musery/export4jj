@@ -1,7 +1,7 @@
 package com.musery.export;
 
 import java.io.File;
-import java.util.LinkedHashMap;
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -15,8 +15,8 @@ public class ExportOption {
   private String name;
   /** 输出文件格式 */
   private Format format;
-  // 首页 (有序)
-  private LinkedHashMap<String, FontElement> font;
+  // 首页信息
+  private List<FontElement> font;
   /** 页眉 */
   private String header;
 

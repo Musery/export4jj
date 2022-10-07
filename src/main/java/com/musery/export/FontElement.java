@@ -1,20 +1,30 @@
 package com.musery.export;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /** 首页元素 */
+@Data
+@AllArgsConstructor
 public class FontElement {
 
   private FontElementEnum type;
 
-  private String content;
+  private Object content;
 
-  public enum FontElementEnum {
-    /** 空行 */
-    BR,
-    /** 图片 */
-    PICTURE,
-    /** 标题 */
-    TITLE,
-    /** 副标题 */
-    SUBTITLE
+  public static List<FontElement> build(int n, File logo, String title, String... subtitle) {
+    List<FontElement> list = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      list.add(new FontElement(FontElementEnum.BR, ""));
+    }
+    list.add(new FontElement(FontElementEnum.PICTURE, logo));
+    list.add(new FontElement(FontElementEnum.TITLE, title));
+    for (String sub : subtitle) {
+      list.add(new FontElement(FontElementEnum.SUBTITLE, sub));
+    }
+    return list;
   }
 }

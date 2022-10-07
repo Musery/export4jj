@@ -2,6 +2,7 @@ package com.musery.echarts;
 
 import com.musery.NodeJSEnvironment;
 import java.util.Objects;
+import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,15 +29,23 @@ public class EchartsGenerator extends NodeJSEnvironment {
     return generator;
   }
 
-  public static void generator(String option) {
+  public static void generator(String option, Consumer<String> afterBuild, Consumer<String> err) {
     if (Objects.isNull(option)) {
       throw new IllegalArgumentException("option must not be null");
     }
     getInstance()
         .start(
             "EchartsGenerator.js",
-            r -> {},
-            e -> log.error("generator [{}] with ", option, e),
+            str -> {
+              if (null != afterBuild) {
+                afterBuild.accept(str);
+              }
+            },
+            errMsg -> {
+              if (null != err) {
+                err.accept(errMsg);
+              }
+            },
             "--option",
             option);
   }

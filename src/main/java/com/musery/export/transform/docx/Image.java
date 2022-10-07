@@ -1,11 +1,11 @@
 package com.musery.export.transform.docx;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import com.musery.parse.AST;
 import com.musery.util.HttpUtils;
 import com.musery.util.HttpUtils.BaseHttpClient;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,21 +31,16 @@ public class Image implements DOCX4TR {
 
   @Override
   public List transform(AST ast) {
-    List<R> list = new ArrayList<>();
-    BinaryPartAbstractImage image = null;
-    if (StringUtils.isNotBlank(ast.getUrl())) {
-      try {
-        HttpUtils.BaseHttpClient baseHttpClient = new BaseHttpClient(ast.getUrl(), header, null);
-        image =
-            BinaryPartAbstractImage.createImagePart(
-                getWMLPackage(),
-                HttpUtils.doMethodWithCode(baseHttpClient.buildRequest("", null, null, null))
-                    .body()
-                    .bytes());
-      } catch (Exception e) {
-        log.error("图片加载失败", e);
-      }
+    R run = buildWithError(ast);
+    if (null == run) {
+      return CollectionUtil.newArrayList();
+    } else {
+      return CollectionUtil.newArrayList(run);
     }
+  }
+
+  private R buildWithError(AST ast) {
+    BinaryPartAbstractImage image = build(ast);
     if (null == image) {
       // 增加占位图
       try {
@@ -67,13 +62,28 @@ public class Image implements DOCX4TR {
         Drawing drawing = objectFactory.createDrawing();
         drawing.getAnchorOrInline().add(inline);
         run.getContent().add(drawing);
-        list.add(run);
+        return run;
       } catch (Exception e) {
         log.error("insert image into document error", e);
       }
     }
+    return null;
+  }
 
-    return list;
+  protected BinaryPartAbstractImage build(AST ast) {
+    if (StringUtils.isNotBlank(ast.getUrl())) {
+      try {
+        HttpUtils.BaseHttpClient baseHttpClient = new BaseHttpClient(ast.getUrl(), header, null);
+        return BinaryPartAbstractImage.createImagePart(
+            getWMLPackage(),
+            HttpUtils.doMethodWithCode(baseHttpClient.buildRequest("", null, null, null))
+                .body()
+                .bytes());
+      } catch (Exception e) {
+        log.error("图片加载失败", e);
+      }
+    }
+    return null;
   }
 
   @Override
@@ -83,7 +93,7 @@ public class Image implements DOCX4TR {
 
   private static final AtomicInteger atomicInteger = new AtomicInteger(0);
 
-  private static int getId() {
+  protected static int getId() {
     atomicInteger.compareAndSet(10000, 0);
     return atomicInteger.getAndIncrement();
   }

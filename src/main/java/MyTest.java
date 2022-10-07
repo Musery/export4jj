@@ -1,6 +1,7 @@
 import cn.hutool.core.io.FileUtil;
 import com.musery.export.Export2Any;
 import com.musery.export.ExportOption;
+import com.musery.export.FontElement;
 import com.musery.export.Format;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -18,7 +19,14 @@ public class MyTest {
                 "Test "
                     + LocalDateTime.now()
                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-            .setFormat(Format.DOCX);
+            .setFormat(Format.DOCX)
+            .setFont(
+                FontElement.build(
+                    3,
+                    FileUtil.file(MyTest.class.getClassLoader().getResource("logo.png")),
+                    "罗贯中选集大赏",
+                    "作者： 罗贯中",
+                    "时间: 明朝"));
 
     Export2Any.export(
         exportOption,
