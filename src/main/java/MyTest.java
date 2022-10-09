@@ -19,7 +19,7 @@ public class MyTest {
                 "Test "
                     + LocalDateTime.now()
                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-            .setFormat(Format.DOCX)
+            .setFormat(Format.HTML)
             .setFont(
                 FontElement.build(
                     3,

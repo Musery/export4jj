@@ -1,7 +1,6 @@
 package com.musery;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.system.oshi.OshiUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +11,6 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import oshi.software.os.OperatingSystem;
 
 /** NodeJS 进程运行环境 */
 @Slf4j
@@ -20,14 +18,10 @@ import oshi.software.os.OperatingSystem;
 public class NodeJSEnvironment {
 
   private ProcessBuilder pb;
-  private OperatingSystem os;
-  private String cpu;
 
   private boolean support;
 
   protected NodeJSEnvironment() {
-    os = OshiUtil.getOs();
-    cpu = OshiUtil.getCpuInfo().getCpuModel();
     pb =
         new ProcessBuilder()
             //  设置工作路径
