@@ -25,8 +25,7 @@ public class NodeJSEnvironment {
     pb =
         new ProcessBuilder()
             //  设置工作路径
-            .directory(
-                new File(NodeJSEnvironment.class.getClassLoader().getResource("").getPath()));
+            .directory(new File(NodeJSEnvironment.class.getResource("/export-runtime").getPath()));
     checkNodeEnvironment();
   }
 

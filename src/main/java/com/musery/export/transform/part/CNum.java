@@ -1,31 +1,23 @@
 package com.musery.export.transform.part;
 
 import jakarta.xml.bind.JAXBException;
-import java.math.BigInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
-import org.docx4j.wml.Jc;
-import org.docx4j.wml.JcEnumeration;
-import org.docx4j.wml.Lvl;
+import org.docx4j.wml.*;
 import org.docx4j.wml.Lvl.LvlText;
 import org.docx4j.wml.Lvl.Start;
-import org.docx4j.wml.NumFmt;
-import org.docx4j.wml.NumberFormat;
 import org.docx4j.wml.Numbering.AbstractNum;
 import org.docx4j.wml.Numbering.AbstractNum.MultiLevelType;
 import org.docx4j.wml.Numbering.Num;
 import org.docx4j.wml.Numbering.Num.AbstractNumId;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.Ind;
 import org.docx4j.wml.PPrBase.NumPr;
 import org.docx4j.wml.PPrBase.NumPr.Ilvl;
 import org.docx4j.wml.PPrBase.NumPr.NumId;
-import org.docx4j.wml.RFonts;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.STHint;
+
+import java.math.BigInteger;
 
 /** 不建议自定义 够用 */
 @Slf4j
@@ -36,22 +28,19 @@ public class CNum {
   private static BigInteger orderId = BigInteger.valueOf(3);
   private static BigInteger bulletId = BigInteger.valueOf(4);
 
-  public static NumberingDefinitionsPart init() {
-    if (null == definitionsPart) {
-      synchronized (CNum.class) {
-        if (null == definitionsPart) {
-          try {
-            definitionsPart = new NumberingDefinitionsPart();
-            definitionsPart.unmarshalDefaultNumbering();
-            // 增加默认的自定义序列
-            withNum(orderId, NumberFormat.DECIMAL);
-            withNum(bulletId, NumberFormat.BULLET);
-          } catch (JAXBException | InvalidFormatException e) {
-            log.error("Build Numbering Error", e);
-          }
-        }
-      }
+  static {
+    try {
+      definitionsPart = new NumberingDefinitionsPart();
+      definitionsPart.unmarshalDefaultNumbering();
+      // 增加默认的自定义序列
+      withNum(orderId, NumberFormat.DECIMAL);
+      withNum(bulletId, NumberFormat.BULLET);
+    } catch (JAXBException | InvalidFormatException e) {
+      log.error("Build Numbering Error", e);
     }
+  }
+
+  public static NumberingDefinitionsPart init() {
     return definitionsPart;
   }
 

@@ -2,38 +2,31 @@ package com.musery.export.transform.part;
 
 import cn.hutool.core.collection.CollectionUtil;
 import jakarta.xml.bind.JAXBException;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
-import org.docx4j.wml.CTTblStylePr;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.PPr;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.Style;
+import org.docx4j.wml.*;
 import org.docx4j.wml.Style.BasedOn;
 import org.docx4j.wml.Style.Name;
-import org.docx4j.wml.TblPr;
+
+import java.util.List;
 
 @Slf4j
 public class CStyle {
 
   private static StyleDefinitionsPart definitionsPart;
 
-  public static StyleDefinitionsPart init() {
-    if (null == definitionsPart) {
-      synchronized (CStyle.class) {
-        if (null == definitionsPart) {
-          try {
-            definitionsPart = new StyleDefinitionsPart();
-            definitionsPart.unmarshalDefaultStyles();
-          } catch (JAXBException | InvalidFormatException e) {
-            log.error("Build Style Error", e);
-          }
-        }
-      }
+  static {
+    try {
+      definitionsPart = new StyleDefinitionsPart();
+      definitionsPart.unmarshalDefaultStyles();
+    } catch (JAXBException | InvalidFormatException e) {
+      log.error("Build Style Error", e);
     }
+  }
+
+  public static StyleDefinitionsPart init() {
     return definitionsPart;
   }
 

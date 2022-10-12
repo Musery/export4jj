@@ -3,37 +3,17 @@ package com.musery.export.transform;
 import cn.hutool.core.collection.CollectionUtil;
 import com.musery.export.transform.part.CStyle;
 import com.musery.parse.AST;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import org.docx4j.jaxb.Context;
 import org.docx4j.sharedtypes.STOnOff;
-import org.docx4j.wml.CTBorder;
-import org.docx4j.wml.CTCnf;
-import org.docx4j.wml.CTShd;
-import org.docx4j.wml.CTTblLook;
+import org.docx4j.wml.*;
 import org.docx4j.wml.CTTblPrBase.TblStyle;
 import org.docx4j.wml.CTTblPrBase.TblStyleColBandSize;
 import org.docx4j.wml.CTTblPrBase.TblStyleRowBandSize;
-import org.docx4j.wml.CTTblStylePr;
-import org.docx4j.wml.Color;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.P;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.STBorder;
-import org.docx4j.wml.STShd;
-import org.docx4j.wml.STTblStyleOverrideType;
-import org.docx4j.wml.STThemeColor;
-import org.docx4j.wml.Tbl;
-import org.docx4j.wml.TblBorders;
-import org.docx4j.wml.TblGrid;
-import org.docx4j.wml.TblGridCol;
-import org.docx4j.wml.TblPr;
-import org.docx4j.wml.TblWidth;
-import org.docx4j.wml.Tc;
-import org.docx4j.wml.TcPr;
 import org.docx4j.wml.TcPrInner.TcBorders;
-import org.docx4j.wml.Tr;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Table implements DOCX4TR {
 
@@ -140,7 +120,7 @@ public class Table implements DOCX4TR {
       for (int j = 0; j < row.getContent().size(); j++) {
         TblWidth tblWidth = objectFactory.createTblWidth();
         tblWidth.setType(TblWidth.TYPE_DXA);
-        tblWidth.setW(BigInteger.valueOf(avg + (i == 0 ? rest : 0L)));
+        tblWidth.setW(BigInteger.valueOf(avg + (j == 0 ? rest : 0L)));
         ((Tc) row.getContent().get(j)).getTcPr().setTcW(tblWidth);
         if (j == 0) {
           // 第一列

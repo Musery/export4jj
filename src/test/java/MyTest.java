@@ -14,7 +14,7 @@ public class MyTest {
     ExportOption exportOption =
         new ExportOption()
             .setHeader("罗贯中选集")
-            .setOutput("/Users/jonathan/Downloads/export")
+            .setOutput("/Users/jonathan/Downloads")
             .setName(
                 "Test "
                     + LocalDateTime.now()
@@ -23,7 +23,7 @@ public class MyTest {
             .setFont(
                 FontElement.build(
                     3,
-                    FileUtil.file(MyTest.class.getClassLoader().getResource("logo.png")),
+                    FileUtil.file(MyTest.class.getResource("/export-runtime/logo.png")),
                     "罗贯中选集大赏",
                     "作者： 罗贯中",
                     "时间: 明朝"));
@@ -31,6 +31,6 @@ public class MyTest {
     Export2Any.export(
         exportOption,
         FileUtil.readString(
-            MyTest.class.getClassLoader().getResource("Test.md"), StandardCharsets.UTF_8));
+            MyTest.class.getResource("/export-runtime/Test.md"), StandardCharsets.UTF_8));
   }
 }

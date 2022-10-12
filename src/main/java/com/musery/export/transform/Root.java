@@ -2,16 +2,8 @@ package com.musery.export.transform;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.musery.export.ExportOption;
-import com.musery.export.transform.part.CFont;
-import com.musery.export.transform.part.CFontTable;
-import com.musery.export.transform.part.CFooter;
-import com.musery.export.transform.part.CFootnote;
-import com.musery.export.transform.part.CHeader;
-import com.musery.export.transform.part.CImage;
-import com.musery.export.transform.part.CNum;
-import com.musery.export.transform.part.CStyle;
+import com.musery.export.transform.part.*;
 import com.musery.parse.AST;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -19,6 +11,8 @@ import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.toc.Toc;
 import org.docx4j.toc.TocGenerator;
+
+import java.util.List;
 
 public class Root implements DOCX4TR, Starter {
 
@@ -39,12 +33,12 @@ public class Root implements DOCX4TR, Starter {
       mainDocumentPart.addTargetPart(CStyle.init());
       // init image config
       CImage.initErrorPng(docx);
-      //  prepare 线程变量
-      ExportOption.prepare(docx);
       if (StringUtils.isNotBlank(option.getHeader())) {
         CHeader.init(docx, option.getHeader());
       }
       CFooter.init(docx);
+      option.setDocx(docx);
+      ExportOption.prepare(option);
       // 递归解析
       for (Object obj : transform(ast)) {
         mainDocumentPart.addObject(obj);

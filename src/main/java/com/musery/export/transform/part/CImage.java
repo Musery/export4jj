@@ -2,7 +2,6 @@ package com.musery.export.transform.part;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
-import com.musery.export.transform.Image;
 import jakarta.xml.bind.JAXBElement;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +32,7 @@ public class CImage {
     try {
       error =
           BinaryPartAbstractImage.createImagePart(
-              docx, FileUtil.file(Image.class.getClassLoader().getResource("error.png")));
+              docx, FileUtil.file(CImage.class.getResource("/export-runtime/error.png")));
     } catch (Exception e) {
       log.error("占位图片加载失败", e);
     }
