@@ -14,12 +14,12 @@ public class MyTest {
     ExportOption exportOption =
         new ExportOption()
             .setHeader("罗贯中选集")
-            .setOutput("/Users/jonathan/Downloads")
+            .setOutput("/Users/jonathan/Downloads/export")
             .setName(
                 "Test "
                     + LocalDateTime.now()
                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-            .setFormat(Format.HTML)
+            .setFormat(Format.DOCX)
             .setFont(
                 FontElement.build(
                     3,

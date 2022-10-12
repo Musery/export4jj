@@ -2,10 +2,13 @@ package com.musery.export.transform.part;
 
 import cn.hutool.core.lang.UUID;
 import com.musery.export.FontElement;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.math.BigInteger;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -77,8 +80,19 @@ public class CFont {
         case PICTURE:
           try {
             p.setPPr(title);
-            BinaryPartAbstractImage image =
-                BinaryPartAbstractImage.createImagePart(docx, (File) element.getContent());
+            BinaryPartAbstractImage image;
+            if (element.getContent() instanceof File) {
+              image = BinaryPartAbstractImage.createImagePart(docx, (File) element.getContent());
+            } else if (element.getContent() instanceof ByteArrayInputStream) {
+              try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+                IOUtils.copy(((ByteArrayInputStream) element.getContent()), byteArrayOutputStream);
+                image =
+                    BinaryPartAbstractImage.createImagePart(
+                        docx, byteArrayOutputStream.toByteArray());
+              }
+            } else {
+              break;
+            }
             Inline inline =
                 image.createImageInline(UUID.fastUUID().toString(true), "", 9999, 9999, false);
             Drawing drawing = objectFactory.createDrawing();
