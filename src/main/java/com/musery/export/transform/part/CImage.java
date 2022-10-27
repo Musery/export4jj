@@ -3,11 +3,6 @@ package com.musery.export.transform.part;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import jakarta.xml.bind.JAXBElement;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
@@ -23,25 +18,39 @@ import org.docx4j.wml.Drawing;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.R;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Slf4j
 public class CImage {
 
   private static BinaryPartAbstractImage error;
+  private static BinaryPartAbstractImage empty;
 
   public static void initErrorPng(WordprocessingMLPackage docx) {
     try {
       error =
           BinaryPartAbstractImage.createImagePart(
               docx, FileUtil.file(CImage.class.getResource("/export-runtime/error.png")));
+      empty =
+          BinaryPartAbstractImage.createImagePart(
+              docx, FileUtil.file(CImage.class.getResource("/export-runtime/empty.png")));
     } catch (Exception e) {
       log.error("占位图片加载失败", e);
     }
   }
 
+  public static R buildWithPICTError(String alt) {
+    return buildWithPICT(error, alt);
+  }
+
   public static R buildWithPICT(BinaryPartAbstractImage image, String alt) {
     if (null == image) {
       // 增加占位图
-      image = error;
+      image = empty;
     }
     if (null != image) {
       try {
@@ -92,7 +101,7 @@ public class CImage {
     } catch (Exception e) {
       log.error("图片加载失败", e);
     }
-    return buildWithPICT(null, alt);
+    return buildWithPICTError(alt);
   }
 
   private static final AtomicInteger atomicInteger = new AtomicInteger(0);

@@ -1,7 +1,8 @@
 package com.musery.parse;
 
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 /** unified AST 字段 */
 @Data
@@ -25,4 +26,6 @@ public class AST {
   private String label;
   // table
   private List<String> align;
+
+  private String lang;
 }
