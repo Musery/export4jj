@@ -2,10 +2,11 @@ package com.musery.export.transform;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.musery.parse.AST;
-import java.util.List;
 import org.docx4j.jaxb.Context;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
+
+import java.util.List;
 
 public class Paragraph implements DOCX4TR {
 
@@ -19,6 +20,7 @@ public class Paragraph implements DOCX4TR {
 
   @Override
   public boolean adapt(AST ast) {
-    return ast.getType().equals("paragraph");
+    return ast.getType().equals("paragraph")
+        || (ast.getType().equals("html") && ast.getValue().equals("</br>"));
   }
 }

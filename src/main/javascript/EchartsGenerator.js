@@ -1,4 +1,12 @@
 const echarts = require("echarts");
+const worldMap = require("./world");
+const chinaMap = require("./china.json");
+const themeLight = require("./theme-light");
+
+echarts.registerMap("world", worldMap.default);
+echarts.registerMap("china", chinaMap);
+echarts.registerTheme("soc", themeLight);
+
 const args = require("arg")({
   "--option": String,
 });
