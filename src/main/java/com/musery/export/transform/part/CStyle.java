@@ -10,6 +10,7 @@ import org.docx4j.wml.*;
 import org.docx4j.wml.Style.BasedOn;
 import org.docx4j.wml.Style.Name;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Slf4j
@@ -17,10 +18,53 @@ public class CStyle {
 
   private static StyleDefinitionsPart definitionsPart;
 
+  private static RFonts simsum;
+
   static {
     try {
       definitionsPart = new StyleDefinitionsPart();
       definitionsPart.unmarshalDefaultStyles();
+      ObjectFactory objectFactory = Context.getWmlObjectFactory();
+      simsum = objectFactory.createRFonts();
+      simsum.setEastAsia("SimSun");
+      simsum.setAscii("SimSun");
+      simsum.setHAnsi("SimSun");
+      RPr rPr = objectFactory.createRPr();
+      rPr.setRFonts(simsum);
+
+      Style characterStyle = definitionsPart.getDefaultCharacterStyle();
+      characterStyle.setRPr(rPr);
+
+      Style paragraphStyle = definitionsPart.getDefaultParagraphStyle();
+      paragraphStyle.setRPr(rPr);
+
+      // 设置目录
+      PPr pPr = objectFactory.createPPr();
+      pPr.setKeepNext(objectFactory.createBooleanDefaultTrue());
+      pPr.setKeepLines(objectFactory.createBooleanDefaultTrue());
+      PPrBase.NumPr numPr = objectFactory.createPPrBaseNumPr();
+      PPrBase.NumPr.NumId numId = objectFactory.createPPrBaseNumPrNumId();
+      numId.setVal(BigInteger.ZERO);
+      numPr.setNumId(numId);
+      pPr.setNumPr(numPr);
+      PPrBase.Spacing spacing = objectFactory.createPPrBaseSpacing();
+      spacing.setBefore(BigInteger.valueOf(480L));
+      spacing.setAfter(BigInteger.ZERO);
+      pPr.setSpacing(spacing);
+      PPrBase.OutlineLvl lvl = objectFactory.createPPrBaseOutlineLvl();
+      lvl.setVal(BigInteger.valueOf(9L));
+      pPr.setOutlineLvl(lvl);
+
+      RPr mRpr = objectFactory.createRPr();
+      mRpr.setRFonts(simsum);
+      mRpr.setB(objectFactory.createBooleanDefaultTrue());
+      mRpr.setBCs(objectFactory.createBooleanDefaultTrue());
+      HpsMeasure hpsMeasure = objectFactory.createHpsMeasure();
+      hpsMeasure.setVal(BigInteger.valueOf(28L));
+      mRpr.setSz(hpsMeasure);
+      mRpr.setSzCs(hpsMeasure);
+      customPStyle("TOCHeading", "TOC Heading", pPr, mRpr);
+
     } catch (JAXBException | InvalidFormatException e) {
       log.error("Build Style Error", e);
     }

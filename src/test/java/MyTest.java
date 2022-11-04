@@ -3,6 +3,7 @@ import com.musery.export.Export2Any;
 import com.musery.export.ExportOption;
 import com.musery.export.FontElement;
 import com.musery.export.Format;
+
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +20,7 @@ public class MyTest {
                 "Test "
                     + LocalDateTime.now()
                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-            .setFormat(Format.DOCX)
+            .setFormat(Format.PDF)
             .setFont(
                 FontElement.build(
                     3,
