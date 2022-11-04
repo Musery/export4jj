@@ -2,9 +2,10 @@ package com.musery.parse;
 
 import com.musery.NodeJSEnvironment;
 import com.musery.util.JacksonUtils;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Objects;
 import java.util.function.Consumer;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MarkDownParser extends NodeJSEnvironment {
@@ -30,13 +31,15 @@ public class MarkDownParser extends NodeJSEnvironment {
     return parser;
   }
 
-  public static void parse(String markdown, Consumer<AST> afterParse, Consumer<String> err) {
+  public static void parse(
+      String markdown, String output, Consumer<AST> afterParse, Consumer<String> err) {
     if (Objects.isNull(markdown)) {
       throw new IllegalArgumentException("markdown must not be null");
     }
     getInstance()
         .start(
             "MarkdownParser.js",
+            output,
             astString -> {
               if (null != afterParse) {
                 AST ast = JacksonUtils.toObject(astString, AST.class);

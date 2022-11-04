@@ -43,6 +43,7 @@ public class Root implements DOCX4TR, Starter {
       for (Object obj : transform(ast)) {
         mainDocumentPart.addObject(obj);
       }
+      mainDocumentPart.getContent().add(0, CFont.getPageBr());
       Toc.setTocHeadingText("目录");
       // add toc 1-3 style
       mainDocumentPart.getPropertyResolver().activateStyle("TOC1");

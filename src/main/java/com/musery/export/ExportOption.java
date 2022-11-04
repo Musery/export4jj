@@ -38,6 +38,10 @@ public class ExportOption {
             : output + "/" + name + "." + format.name());
   }
 
+  public String tmp() {
+    return output.endsWith("/") ? output + name + ".tmp" : output + "/" + name + ".tmp";
+  }
+
   public ExportOption() {
     trs =
         CollectionUtil.newLinkedList(

@@ -9,7 +9,7 @@
     "sharp": "^0.31.0"
   },
   "scripts": {
-    "build": "esbuild MarkdownParser.js --bundle --minify --bundle --platform=node --outfile=../resources/MarkdownParser.js && esbuild EchartsGenerator.js --minify --bundle --platform=node --outfile=../resources/EchartsGenerator.js"
+    "build": "esbuild MarkdownParser.js --bundle --minify --bundle --platform=node --outfile=../resources/export-runtime/MarkdownParser.js && esbuild EchartsGenerator.js --minify --bundle --platform=node --outfile=../resources/export-runtime/EchartsGenerator.js"
   },
   "devDependencies": {
     "why-is-node-running": "^2.2.2"

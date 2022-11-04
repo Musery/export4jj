@@ -1,6 +1,11 @@
 package com.musery;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -8,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 /** NodeJS 进程运行环境 */
 @Slf4j
@@ -45,10 +47,19 @@ public class NodeJSEnvironment {
   }
 
   protected void start(String jsFile, Consumer<String> suc, Consumer<String> err, String... args) {
+    start(jsFile, null, suc, err, args);
+  }
+
+  protected void start(
+      String jsFile, String output, Consumer<String> suc, Consumer<String> err, String... args) {
     List<String> command = new ArrayList<>(null == args ? 2 : (args.length + 2));
     command.add("node");
     if (!Objects.isNull(jsFile)) {
       command.add(jsFile);
+    }
+    if (StringUtils.isNotBlank(output)) {
+      command.add("--output");
+      command.add(output);
     }
     if (null != args) {
       for (String arg : args) command.add(arg);
@@ -57,7 +68,13 @@ public class NodeJSEnvironment {
     try {
       Process process = pb.start();
       if (null != suc) {
-        suc.accept(IoUtil.read(process.getInputStream(), StandardCharsets.UTF_8));
+        String result = IoUtil.read(process.getInputStream(), StandardCharsets.UTF_8);
+        if (StringUtils.isNotBlank(output)) {
+          suc.accept(FileUtil.readString(output, StandardCharsets.UTF_8));
+          FileUtil.del(output);
+        } else {
+          suc.accept(result);
+        }
       }
       String errMsg = IoUtil.read(process.getErrorStream(), StandardCharsets.UTF_8);
       if (StringUtils.isNotBlank(errMsg)) {

@@ -1,6 +1,7 @@
 const { fromMarkdown } = require("mdast-util-from-markdown");
 const { gfm } = require("micromark-extension-gfm");
 const { gfmFromMarkdown } = require("mdast-util-gfm");
+const fs = require("fs");
 
 const toAST = (markdown) => {
   return fromMarkdown(markdown, {
@@ -11,6 +12,7 @@ const toAST = (markdown) => {
 
 const args = require("arg")({
   "--markdown": String,
+  "--output": String,
 });
 
-console.log(JSON.stringify(toAST(args["--markdown"])));
+fs.writeFileSync(args["--output"], JSON.stringify(toAST(args["--markdown"])));

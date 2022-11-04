@@ -1,9 +1,10 @@
 package com.musery.echarts;
 
 import com.musery.NodeJSEnvironment;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Objects;
 import java.util.function.Consumer;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class EchartsGenerator extends NodeJSEnvironment {
@@ -29,13 +30,15 @@ public class EchartsGenerator extends NodeJSEnvironment {
     return generator;
   }
 
-  public static void generator(String option, Consumer<String> afterBuild, Consumer<String> err) {
+  public static void generator(
+      String option, String output, Consumer<String> afterBuild, Consumer<String> err) {
     if (Objects.isNull(option)) {
       throw new IllegalArgumentException("option must not be null");
     }
     getInstance()
         .start(
             "EchartsGenerator.js",
+            output,
             str -> {
               if (null != afterBuild) {
                 afterBuild.accept(str);

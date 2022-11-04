@@ -7,12 +7,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.TimeZone;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * JSON-对象转换工具类
@@ -29,7 +29,6 @@ public class JacksonUtils {
     nilOM.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     // 增加LocalDateTime序列化配置
     nilOM.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    nilOM.registerModule(new JavaTimeModule());
     nilOM.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     nilOM.setTimeZone(TimeZone.getDefault());
   }

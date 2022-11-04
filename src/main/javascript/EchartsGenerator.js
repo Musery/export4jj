@@ -2,6 +2,7 @@ const echarts = require("echarts");
 const worldMap = require("./world");
 const chinaMap = require("./china.json");
 const themeLight = require("./theme-light");
+const fs = require("fs");
 
 echarts.registerMap("world", worldMap.default);
 echarts.registerMap("china", chinaMap);
@@ -9,6 +10,7 @@ echarts.registerTheme("soc", themeLight);
 
 const args = require("arg")({
   "--option": String,
+  "--output": String,
 });
 const build = (width, height, option) => {
   const chart = echarts.init(null, null, {
@@ -21,11 +23,14 @@ const build = (width, height, option) => {
   chart.setOption(option);
   return chart;
 };
-console.log(
+
+fs.writeFileSync(
+  args["--output"],
   build(
     process.env.DEFAULT_WIDTH,
     process.env.DEFAULT_HEIGHT,
     JSON.parse(args["--option"])
   ).renderToSVGString()
 );
+
 process.exit();

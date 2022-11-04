@@ -4,14 +4,15 @@ import com.musery.export.transform.Root;
 import com.musery.export.transform.Starter;
 import com.musery.parse.AST;
 import com.musery.parse.MarkDownParser;
-import java.io.FileOutputStream;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.docx4j.Docx4J;
 import org.docx4j.convert.out.HTMLSettings;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+
+import java.io.FileOutputStream;
+import java.util.Objects;
 
 @Slf4j
 public class Export2Any {
@@ -35,6 +36,7 @@ public class Export2Any {
     }
     MarkDownParser.parse(
         markdown,
+        option.tmp(),
         ast -> export2(option, ast),
         eMsg -> log.error("export fail in `parse` step, because of {}", eMsg));
   }

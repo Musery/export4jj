@@ -2,30 +2,20 @@ package com.musery.export.transform.part;
 
 import cn.hutool.core.lang.UUID;
 import com.musery.export.FontElement;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.math.BigInteger;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
-import org.docx4j.wml.Br;
-import org.docx4j.wml.Drawing;
-import org.docx4j.wml.HpsMeasure;
-import org.docx4j.wml.Jc;
-import org.docx4j.wml.JcEnumeration;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.P;
-import org.docx4j.wml.PPr;
+import org.docx4j.wml.*;
 import org.docx4j.wml.PPrBase.PStyle;
-import org.docx4j.wml.R;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.STBrType;
-import org.docx4j.wml.Text;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.math.BigInteger;
+import java.util.List;
 
 /** 首页配置 */
 @Slf4j
@@ -35,7 +25,7 @@ public class CFont {
   private static final PPr subtitle;
 
   static {
-    initPPr(24L, "title", "Title");
+    initPPr(44L, "title", "Title");
     initPPr(20L, "subtitle", "Subtitle");
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
     title = objectFactory.createPPr();
@@ -119,7 +109,7 @@ public class CFont {
     }
   }
 
-  private static P getPageBr() {
+  public static P getPageBr() {
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
     P p = objectFactory.createP();
     R run = objectFactory.createR();
