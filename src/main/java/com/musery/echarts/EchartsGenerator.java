@@ -41,7 +41,8 @@ public class EchartsGenerator extends NodeJSEnvironment {
             output,
             str -> {
               if (null != afterBuild) {
-                afterBuild.accept(str);
+                // 去除svg图位置截断问题
+                afterBuild.accept(str.replace("clip-path=\"url(#zr0-c0)\"", ""));
               }
             },
             errMsg -> {

@@ -1,10 +1,10 @@
 const echarts = require("echarts");
-const worldMap = require("./world");
+const worldMap = require("./world.json");
 const chinaMap = require("./china.json");
 const themeLight = require("./theme-light");
 const fs = require("fs");
 
-echarts.registerMap("world", worldMap.default);
+echarts.registerMap("world", worldMap);
 echarts.registerMap("china", chinaMap);
 echarts.registerTheme("soc", themeLight);
 
