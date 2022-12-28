@@ -92,13 +92,13 @@ public class CStyle {
   }
 
   public static Style customTStyle(
-      String id, String name, TblPr tblPr, List<CTTblStylePr> tblStylePr) {
+      String id, String name, PPr pPr, TblPr tblPr, List<CTTblStylePr> tblStylePr) {
     return customStyle(
         "table",
         id,
         name,
         definitionsPart.getDefaultTableStyle().getStyleId(),
-        null,
+        pPr,
         null,
         tblPr,
         tblStylePr);

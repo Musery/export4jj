@@ -25,8 +25,8 @@ public class CFont {
   private static final PPr subtitle;
 
   static {
-    initPPr(44L, "title", "Title");
-    initPPr(20L, "subtitle", "Subtitle");
+    initPPr(44L, "title", "Title", true);
+    initPPr(20L, "subtitle", "Subtitle", false);
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
     title = objectFactory.createPPr();
     PStyle pStyle = objectFactory.createPPrBasePStyle();
@@ -39,7 +39,7 @@ public class CFont {
     subtitle.setPStyle(subtitleStyle);
   }
 
-  private static void initPPr(Long size, String id, String name) {
+  private static void initPPr(Long size, String id, String name, boolean b) {
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
     PPr pPr = objectFactory.createPPr();
     Jc jc = objectFactory.createJc();
@@ -51,6 +51,10 @@ public class CFont {
     hpsMeasure.setVal(BigInteger.valueOf(size));
     rPr.setSz(hpsMeasure);
     rPr.setSzCs(hpsMeasure);
+    if (b) {
+      rPr.setB(objectFactory.createBooleanDefaultTrue());
+      rPr.setBCs(objectFactory.createBooleanDefaultTrue());
+    }
     CStyle.customPStyle(id, name, pPr, rPr);
   }
 

@@ -1,9 +1,10 @@
 package com.musery.export;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** 首页元素 */
 @Data
@@ -14,13 +15,17 @@ public class FontElement {
 
   private Object content;
 
-  public static List<FontElement> build(int n, Object logo, String title, String... subtitle) {
+  public static List<FontElement> build(
+      int n, Object logo, String title, int n2, String... subtitle) {
     List<FontElement> list = new ArrayList<>();
     for (int i = 0; i < n; i++) {
       list.add(new FontElement(FontElementEnum.BR, ""));
     }
     list.add(new FontElement(FontElementEnum.PICTURE, logo));
     list.add(new FontElement(FontElementEnum.TITLE, title));
+    for (int i = 0; i < n2; i++) {
+      list.add(new FontElement(FontElementEnum.BR, ""));
+    }
     for (String sub : subtitle) {
       list.add(new FontElement(FontElementEnum.SUBTITLE, sub));
     }

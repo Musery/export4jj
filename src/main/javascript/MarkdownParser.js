@@ -4,7 +4,7 @@ const { gfmFromMarkdown } = require("mdast-util-gfm");
 const fs = require("fs");
 
 const toAST = (markdown) => {
-  return fromMarkdown(markdown, {
+  return fromMarkdown(fs.readFileSync(markdown), {
     extensions: [gfm()],
     mdastExtensions: [gfmFromMarkdown()],
   });

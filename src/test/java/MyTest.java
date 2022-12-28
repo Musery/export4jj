@@ -20,12 +20,13 @@ public class MyTest {
                 "Test "
                     + LocalDateTime.now()
                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-            .setFormat(Format.PDF)
+            .setFormat(Format.DOCX)
             .setFont(
                 FontElement.build(
                     3,
                     FileUtil.file(MyTest.class.getResource("/export-runtime/logo.png")),
                     "罗贯中选集大赏",
+                    5,
                     "作者： 罗贯中",
                     "时间: 明朝"));
 

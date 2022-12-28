@@ -26,6 +26,13 @@ public class Table implements DOCX4TR {
 
   static {
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
+    PPr pPr = objectFactory.createPPr();
+    PPrBase.Spacing spacing = objectFactory.createPPrBaseSpacing();
+    spacing.setAfter(BigInteger.ZERO);
+    spacing.setLine(BigInteger.valueOf(240L));
+    spacing.setLineRule(STLineSpacingRule.AUTO);
+    pPr.setSpacing(spacing);
+
     TblPr tblPr = objectFactory.createTblPr();
     TblStyleRowBandSize styleRowBandSize = objectFactory.createCTTblPrBaseTblStyleRowBandSize();
     styleRowBandSize.setVal(BigInteger.ONE);
@@ -57,7 +64,7 @@ public class Table implements DOCX4TR {
     list.add(buildBandPr(STTblStyleOverrideType.BAND_1_VERT));
     list.add(buildBandPr(STTblStyleOverrideType.BAND_1_HORZ));
 
-    CStyle.customTStyle("i-table", "ITable", tblPr, list);
+    CStyle.customTStyle("i-table", "ITable", pPr, tblPr, list);
 
     table = objectFactory.createTblPr();
     TblStyle tblStyle = objectFactory.createCTTblPrBaseTblStyle();
@@ -178,8 +185,7 @@ public class Table implements DOCX4TR {
     CTShd ctShd = objectFactory.createCTShd();
     ctShd.setVal(STShd.CLEAR);
     ctShd.setColor("auto");
-    ctShd.setFill("A5A5A5");
-    ctShd.setThemeFill(STThemeColor.ACCENT_3);
+    ctShd.setFill("25ABFF");
     tcPr.setShd(ctShd);
     firstRow.setTcPr(tcPr);
     return firstRow;
@@ -226,9 +232,7 @@ public class Table implements DOCX4TR {
     CTShd ctShd = objectFactory.createCTShd();
     ctShd.setVal(STShd.CLEAR);
     ctShd.setColor("auto");
-    ctShd.setFill("EDEDED");
-    ctShd.setThemeFill(STThemeColor.ACCENT_3);
-    ctShd.setThemeFillTint("33");
+    ctShd.setFill("3CEFFF");
     tcPr.setShd(ctShd);
     band.setTcPr(tcPr);
     return band;
