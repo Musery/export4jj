@@ -2,17 +2,17 @@ package com.musery;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /** NodeJS 进程运行环境 */
 @Slf4j
@@ -67,20 +67,24 @@ public class NodeJSEnvironment {
     pb.command(command);
     try {
       Process process = pb.start();
-      if (null != suc) {
-        String result = IoUtil.read(process.getInputStream(), StandardCharsets.UTF_8);
-        if (StringUtils.isNotBlank(output)) {
-          suc.accept(FileUtil.readString(output, StandardCharsets.UTF_8));
-          FileUtil.del(output);
-        } else {
-          suc.accept(result);
+      try (InputStream error = process.getErrorStream();
+          InputStream inputStream = process.getInputStream()) {
+        String errMsg = IoUtil.read(error, StandardCharsets.UTF_8);
+        if (StringUtils.isNotBlank(errMsg)) {
+          log.error("exec command:[{}] with err[{}]", String.join(" ", command), errMsg);
+          if (null != err) {
+            err.accept(errMsg);
+          }
+          return;
         }
-      }
-      String errMsg = IoUtil.read(process.getErrorStream(), StandardCharsets.UTF_8);
-      if (StringUtils.isNotBlank(errMsg)) {
-        log.error("exec command:[{}] with err[{}]", String.join(" ", command), errMsg);
-        if (null != err) {
-          err.accept(errMsg);
+        if (null != suc) {
+          String result = IoUtil.read(inputStream, StandardCharsets.UTF_8);
+          if (StringUtils.isNotBlank(output)) {
+            suc.accept(FileUtil.readString(output, StandardCharsets.UTF_8));
+            FileUtil.del(output);
+          } else {
+            suc.accept(result);
+          }
         }
       }
     } catch (IOException e) {
