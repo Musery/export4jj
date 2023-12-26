@@ -4,15 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.musery.parse.AST;
 import java.util.List;
 import org.docx4j.jaxb.Context;
-import org.docx4j.wml.CTVerticalJc;
-import org.docx4j.wml.Jc;
-import org.docx4j.wml.JcEnumeration;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.P;
-import org.docx4j.wml.PPr;
-import org.docx4j.wml.STVerticalJc;
-import org.docx4j.wml.Tc;
-import org.docx4j.wml.TcPr;
+import org.docx4j.wml.*;
 
 public class TableCell implements DOCX4TR {
 
@@ -30,6 +22,14 @@ public class TableCell implements DOCX4TR {
     Jc jc = objectFactory.createJc();
     jc.setVal(JcEnumeration.CENTER);
     pPr.setJc(jc);
+    ParaRPr rPr = objectFactory.createParaRPr();
+    rPr.setB(objectFactory.createBooleanDefaultTrue());
+    rPr.setBCs(objectFactory.createBooleanDefaultTrue());
+    Color color = objectFactory.createColor();
+    color.setVal("000000");
+    color.setThemeColor(STThemeColor.BACKGROUND_1);
+    rPr.setColor(color);
+    pPr.setRPr(rPr);
     paragraph.setPPr(pPr);
     paragraph.getContent().addAll(traverseChildren(ast));
     tc.getContent().add(paragraph);

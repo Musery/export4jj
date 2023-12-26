@@ -45,7 +45,7 @@ public class Table implements DOCX4TR {
     ctBorder.setVal(STBorder.SINGLE);
     ctBorder.setSz(BigInteger.valueOf(4L));
     ctBorder.setSpace(BigInteger.ZERO);
-    ctBorder.setColor("C9C9C9");
+    ctBorder.setColor("B8CCE4");
     ctBorder.setThemeColor(STThemeColor.ACCENT_3);
     ctBorder.setThemeTint("99");
     tblBorders.setTop(ctBorder);
@@ -157,21 +157,13 @@ public class Table implements DOCX4TR {
     ObjectFactory objectFactory = Context.getWmlObjectFactory();
     CTTblStylePr firstRow = objectFactory.createCTTblStylePr();
     firstRow.setType(STTblStyleOverrideType.FIRST_ROW);
-    RPr rPr = objectFactory.createRPr();
-    rPr.setB(objectFactory.createBooleanDefaultTrue());
-    rPr.setBCs(objectFactory.createBooleanDefaultTrue());
-    Color color = objectFactory.createColor();
-    color.setVal("FFFFFF");
-    color.setThemeColor(STThemeColor.BACKGROUND_1);
-    rPr.setColor(color);
-    firstRow.setRPr(rPr);
     TcPr tcPr = objectFactory.createTcPr();
     TcBorders tcBorders = objectFactory.createTcPrInnerTcBorders();
     CTBorder ctBorder = objectFactory.createCTBorder();
     ctBorder.setVal(STBorder.SINGLE);
     ctBorder.setSz(BigInteger.valueOf(4L));
     ctBorder.setSpace(BigInteger.ZERO);
-    ctBorder.setColor("A5A5A5");
+    ctBorder.setColor("B8CCE4");
     ctBorder.setThemeColor(STThemeColor.ACCENT_3);
     tcBorders.setTop(ctBorder);
     tcBorders.setBottom(ctBorder);
@@ -185,7 +177,7 @@ public class Table implements DOCX4TR {
     CTShd ctShd = objectFactory.createCTShd();
     ctShd.setVal(STShd.CLEAR);
     ctShd.setColor("auto");
-    ctShd.setFill("25ABFF");
+    ctShd.setFill("DCE6F2");
     tcPr.setShd(ctShd);
     firstRow.setTcPr(tcPr);
     return firstRow;
@@ -205,7 +197,7 @@ public class Table implements DOCX4TR {
     ctBorder.setVal(STBorder.DOUBLE);
     ctBorder.setSz(BigInteger.valueOf(4L));
     ctBorder.setSpace(BigInteger.ZERO);
-    ctBorder.setColor("A5A5A5");
+    ctBorder.setColor("B8CCE4");
     ctBorder.setThemeColor(STThemeColor.ACCENT_3);
     tcBorders.setTop(ctBorder);
     tcPr.setTcBorders(tcBorders);
@@ -232,7 +224,7 @@ public class Table implements DOCX4TR {
     CTShd ctShd = objectFactory.createCTShd();
     ctShd.setVal(STShd.CLEAR);
     ctShd.setColor("auto");
-    ctShd.setFill("3CEFFF");
+    ctShd.setFill("FFFFFF");
     tcPr.setShd(ctShd);
     band.setTcPr(tcPr);
     return band;

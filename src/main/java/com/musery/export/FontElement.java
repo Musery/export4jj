@@ -16,12 +16,12 @@ public class FontElement {
   private Object content;
 
   public static List<FontElement> build(
-      int n, Object logo, String title, int n2, String... subtitle) {
+      int n, Object bg, String title, int n2, String... subtitle) {
     List<FontElement> list = new ArrayList<>();
+    list.add(new FontElement(FontElementEnum.BACKGROUND_PICTURE, bg));
     for (int i = 0; i < n; i++) {
       list.add(new FontElement(FontElementEnum.BR, ""));
     }
-    list.add(new FontElement(FontElementEnum.PICTURE, logo));
     list.add(new FontElement(FontElementEnum.TITLE, title));
     for (int i = 0; i < n2; i++) {
       list.add(new FontElement(FontElementEnum.BR, ""));
